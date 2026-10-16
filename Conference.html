@@ -1,10 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link href="https://jsdelivr.net" rel="stylesheet" crossorigin="anonymous">
 </head>
-<body>
-$END$
+<body class="container my-4">
+
+<div id="error-message" class="alert alert-danger d-none" role="alert"></div>
+
+<form id="registration-form" novalidate>
+    <div class="mb-3">
+        <label class="form-label" for="name">Name</label>
+        <input class="form-control" id="name" type="text">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="password">Password</label>
+        <input class="form-control" id="password" type="password">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="email">Email</label>
+        <input class="form-control" id="email" type="email">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="tShirtSize">T-Shirt Size</label>
+        <select class="form-select" id="tShirtSize">
+            <option value="">Choose a size...</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" for="dateOfBirth">Date of Birth</label>
+        <input class="form-control" id="dateOfBirth" type="date">
+    </div>
+
+    <div class="mb-3 form-check">
+        <input class="form-check-input" type="checkbox" id="receiveEmailUpdates">
+        <label class="form-check-label" for="receiveEmailUpdates">Receive email updates</label>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label d-block">Sessions Attended</label>
+        <div class="form-check d-inline-block me-3">
+            <input class="form-check-input" type="checkbox" id="session-morning" value="morning">
+            <label class="form-check-label" for="session-morning">Morning</label>
+        </div>
+        <div class="form-check d-inline-block">
+            <input class="form-check-input" type="checkbox" id="session-afternoon" value="afternoon">
+            <label class="form-check-label" for="session-afternoon">Afternoon</label>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="form-label" for="specialRequests">Special Requests (Optional)</label>
+        <textarea class="form-control" id="specialRequests" rows="3"></textarea>
+    </div>
+
+    <input class="btn btn-dark w-100" id="submit-btn" type="button" value="Submit">
+</form>
+
+<script>
+    document.getElementById('submit-btn').addEventListener('click', function () {
+        const nameEl = document.getElementById('name')
+        const passwordEl = document.getElementById('password')
+        const emailEl = document.getElementById('email')
+        const tShirtSizeEl = document.getElementById('tShirtSize')
+        const dobEl = document.getElementById('dateOfBirth')
+        const emailUpdatesEl = document.getElementById('receiveEmailUpdates')
+        const specialRequestsEl = document.getElementById('specialRequests')
+        const errorContainer = document.getElementById('error-message')
+
+        const name = nameEl.value.trim()
+        const password = passwordEl.value.trim()
+        const email = emailEl.value.trim()
+        const tShirtSize = tShirtSizeEl.value
+        const dateOfBirth = dobEl.value
+        const receiveEmailUpdates = emailUpdatesEl.checked
+        const specialRequests = specialRequestsEl.value.trim()
+
+        const sessionsAttended = []
+        if (document.getElementById('session-morning').checked) {
+            sessionsAttended.push('morning')
+        }
+        if (document.getElementById('session-afternoon').checked) {
+            sessionsAttended.push('afternoon')
+        }
+
+        errorContainer.classList.add('d-none')
+        errorContainer.innerHTML = ''
+
+        let validationErrors = []
+        if (!name) validationErrors.push('Name is required.')
+        if (!password) validationErrors.push('Password is required.')
+        if (!email) validationErrors.push('Email is required.')
+        if (!tShirtSize) validationErrors.push('T-Shirt size is required.')
+        if (!dateOfBirth) validationErrors.push('Date of birth is required.')
+        if (sessionsAttended.length === 0) {
+            validationErrors.push('At least one session must be selected.')
+        }
+
+        if (validationErrors.length > 0) {
+            errorContainer.innerHTML = validationErrors.join('<br>')
+            errorContainer.classList.remove('d-none')
+        } else {
+            const conferenceRegistration = {
+                name: name,
+                password: password,
+                email: email,
+                tShirtSize: tShirtSize,
+                dateOfBirth: dateOfBirth,
+                receiveEmailUpdates: receiveEmailUpdates,
+                sessionsAttended: sessionsAttended,
+                specialRequests: specialRequests
+            }
+
+            console.log(conferenceRegistration)
+        }
+    })
+</script>
 </body>
 </html>
